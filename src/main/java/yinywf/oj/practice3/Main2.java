@@ -27,24 +27,38 @@ public class Main2 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int times = scanner.nextInt();
-        scanner.nextLine();
         for (int t = 0; t < times; t++) {
+            scanner.nextLine();
             String str = scanner.nextLine();
-            List<kdNode> kdNodes = new ArrayList<>();
+            List<KdNode> KdNodes = new ArrayList<>();
             for (String s : str.split(",")) {
-                kdNodes.add(new kdNode(s.charAt(0) - '0', s.charAt(2) - '0'));
+                String[] ss = s.split(" ");
+                KdNodes.add(new KdNode(Double.parseDouble(ss[0]), Double.parseDouble(ss[1])));
             }
-            double x = variance(kdNodes.stream().map(kdNode -> kdNode.x).collect(Collectors.toList()));
-            double y = variance(kdNodes.stream().map(kdNode -> kdNode.y).collect(Collectors.toList()));
-            kdNode kdNode = construct(kdNodes, x > y ? 0 : 1);
-            kdNode target = new kdNode(scanner.nextDouble(), scanner.nextDouble());
+            double x = variance(KdNodes.stream().map(KdNode -> KdNode.x).collect(Collectors.toList()));
+            double y = variance(KdNodes.stream().map(KdNode -> KdNode.y).collect(Collectors.toList()));
+            KdNode kdNode = construct(KdNodes, x > y ? 0 : 1);
+            KdNode target = new KdNode(scanner.nextDouble(), scanner.nextDouble());
             int k = scanner.nextInt();
-            Map<Double, kdNode> distance = new HashMap<>();
+            Map<Double, KdNode> distance = new HashMap<>();
             List<Double> minK = distance(kdNode, target, distance, k);
             StringBuilder stringBuilder = new StringBuilder();
             for (Double d : minK) {
-                kdNode temp = distance.get(d);
-                stringBuilder.append(",").append(temp.x.intValue()).append(" ").append(temp.y.intValue());
+                KdNode temp = distance.get(d);
+                x = temp.x;
+                y = temp.y;
+                stringBuilder.append(",");
+                if ((int) x == x) {
+                    stringBuilder.append(temp.x.intValue());
+                } else {
+                    stringBuilder.append(x);
+                }
+                stringBuilder.append(" ");
+                if ((int) y == y) {
+                    stringBuilder.append(temp.y.intValue());
+                } else {
+                    stringBuilder.append(y);
+                }
             }
             System.out.println(stringBuilder.deleteCharAt(0));
 
@@ -65,13 +79,13 @@ public class Main2 {
         return dVar/m;
     }
 
-    private static List<Double> distance(kdNode kdNode, kdNode target, Map<Double, kdNode> distance, int k) {
+    private static List<Double> distance(KdNode kdNode, KdNode target, Map<Double, KdNode> distance, int k) {
         List<Double> minK = new ArrayList<>();
 
-        Stack<kdNode> stack = new Stack<>();
+        Stack<KdNode> stack = new Stack<>();
         stack.push(kdNode);
         while (!stack.empty()) {
-            kdNode temp = stack.pop();
+            KdNode temp = stack.pop();
             if (temp == null) {
                 continue;
             }
@@ -100,7 +114,7 @@ public class Main2 {
         return minK;
     }
 
-    private static double distance(kdNode kdNode, kdNode target, List<Double> minK, Map<Double, kdNode> distance, int k) {
+    private static double distance(KdNode kdNode, KdNode target, List<Double> minK, Map<Double, KdNode> distance, int k) {
         double d = kdNode.distance(target);
         if (minK.size() < k) {
             minK.add(d);
@@ -118,24 +132,24 @@ public class Main2 {
         return d;
     }
 
-    private static kdNode construct(List<kdNode> kdNodes, int dimension) {
-        if (kdNodes.size() == 0) {
+    private static KdNode construct(List<KdNode> KdNodes, int dimension) {
+        if (KdNodes.size() == 0) {
             return null;
         }
-        List<kdNode> left = new ArrayList<>();
-        List<kdNode> right = new ArrayList<>();
+        List<KdNode> left = new ArrayList<>();
+        List<KdNode> right = new ArrayList<>();
         if (dimension == 0) {
-            kdNodes.sort(Comparator.comparingDouble(o -> o.x));
+            KdNodes.sort(Comparator.comparingDouble(o -> o.x));
         } else {
-            kdNodes.sort(Comparator.comparingDouble(o -> o.y));
+            KdNodes.sort(Comparator.comparingDouble(o -> o.y));
         }
-        int mid = kdNodes.size() / 2;
-        kdNode kdNode = kdNodes.get(mid);
+        int mid = KdNodes.size() / 2;
+        KdNode kdNode = KdNodes.get(mid);
         for (int i = 0; i < mid; i++) {
-            left.add(kdNodes.get(i));
+            left.add(KdNodes.get(i));
         }
-        for (int i = mid + 1; i < kdNodes.size(); i++) {
-            right.add(kdNodes.get(i));
+        for (int i = mid + 1; i < KdNodes.size(); i++) {
+            right.add(KdNodes.get(i));
         }
         kdNode.left = construct(left, dimension ^ 1);
         kdNode.right = construct(right, dimension ^ 1);
@@ -149,21 +163,21 @@ public class Main2 {
         return kdNode;
     }
 
-    static class kdNode{
-        Double x;
-        Double y;
-        int dimension;
-        kdNode left;
-        kdNode right;
-        kdNode father;
+}
+class KdNode {
+    Double x;
+    Double y;
+    int dimension;
+    KdNode left;
+    KdNode right;
+    KdNode father;
 
-        kdNode(double x, double y) {
-            this.x = x;
-            this.y = y;
-        }
+    KdNode(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
 
-        double distance(kdNode target) {
-            return Math.sqrt(Math.pow(x - target.x, 2) + Math.pow(y - target.y, 2));
-        }
+    double distance(KdNode target) {
+        return Math.sqrt(Math.pow(x - target.x, 2) + Math.pow(y - target.y, 2));
     }
 }
