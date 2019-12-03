@@ -30,7 +30,68 @@ package yinywf.oj.practice3;
  * 2 1 3 4
  */
 public class Main {
-    public static void main(String[] args) {
-        
-    }
+    /* Python
+    def pri():
+    for i in range(len(result)):
+        for j in range(len(result[0])):
+            if i == len(result)-1 and j == len(result[0])-1:
+                print(result[i][j])
+            elif i != len(result)-1 and j == len(result[0])-1:
+                print(result[i][j],end=',')
+            else:
+                print(result[i][j] , end=' ')
+
+def mysort(sortindex):
+    keyset=""
+    for i in range(sortindex):
+        keyset+= "x["+str(i)+"],"
+    keyset = keyset.rstrip(",")
+    result.sort(key=lambda x:eval(keyset),reverse=True)
+
+def work( i , count , res_temp):
+    global cost
+    res_temp_copy = res_temp.copy()
+    if i > n :
+        if count == cost:
+            if res_temp_copy not in result:
+                result.append(res_temp_copy)
+        if count < cost:
+            result.clear()
+            result.append(res_temp_copy)
+            cost = count
+    if count <= cost:
+        for j in range(1,n+1):
+            if x[j] == 0 :
+                res_temp.append(j)
+                x[j] = 1
+                work(  i + 1 , count+costMatrix[i][j] , res_temp)
+                res_temp.pop()
+                x[j] = 0
+
+
+
+if __name__=='__main__':
+    numOfExamples = int(input())
+    x = [ 0 for i in range(1000)]
+    for c in range(numOfExamples):
+        n = int(input())
+        costMatrix = [[0 for j in range(n + 1)] for i in range(n + 1)]
+        strarray = input().split(',')
+        for j in range(0, len(strarray)):
+            temp_array = []
+            tempArray = strarray[j].split(' ')
+            costMatrix[int(tempArray[0])][int(tempArray[1])] = int(tempArray[2])
+        cost = 0
+        res_temp = []
+        result = []
+        for i in range( 1 , len(costMatrix)):
+            cost += costMatrix[i][i]
+            res_temp.append(i)
+        result.append(res_temp)
+        work(1,0, [])
+        mysort(len(result[0]))
+        pri()
+
+
+     */
 }
