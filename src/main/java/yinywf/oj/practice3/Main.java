@@ -31,7 +31,7 @@ package yinywf.oj.practice3;
  */
 public class Main {
     /* Python
-    def pri():
+def pri():
     for i in range(len(result)):
         for j in range(len(result[0])):
             if i == len(result)-1 and j == len(result[0])-1:
